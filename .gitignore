@@ -1,3 +1,5 @@
 nbproject/Makefile-*
 nbproject/Package-default.bash
 nbproject/private
+dist
+build
