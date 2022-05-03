@@ -36,7 +36,42 @@
 
 // #pragma config statements should precede project file includes.
 // Use project enums instead of #define for ON and OFF.
+/*
+ * RA0: Serial 
+ * RA1: Serial
+ * 
+ * RC1:  Boot Switch. HIGH(ON), LOW(OFF)
+ * RC3 POWER_ON
+ * RC4 POWER_OFF   
+ * RC5: VBUS_POWER
+ * 
+ * POWER_ONをPS_HOLDがHIGHになるまでHIGHを保持
+ * PS_HOLDがHIGHになればPOWER_ONをLOWにしてよい
+ * 
+ * Software主導(UART経由てきな)
+ * 1.POWER_ONをLOW
+ * 2.パワーダウンコマンドを発行
+ * 3. PS_HOLDがLOWになるのを待つ(最大30Secぐらい？)
+ * 4. 電源を切ってよし
+ * 
+ * ハードウェア主導
+ * 1. POWER_ONをLOW
+ * 2. POWER_OFF_NをLOW(PS_HOLDがLOWになるまで)
+ * 3. PS_HOLDがLOWになるのを待つ(3Sec以上)
+ * 4. Power OFF
+ * 
+ * 
+ *              POWER_OFF_N
+ *                  |
+ *              ||--|
+ *  POWER_OFF --||<-
+ *              ||-|
+ *                 |
+ *                GND
+ */
+
 void main(void) {
+    
     // clock setting
     OSCCON=0b01001000;
     
