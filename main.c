@@ -76,9 +76,9 @@
 #define POWER_OFF LATC4
 #define POWER_ON LATC3
 //input
-#define PS_HOLD LATC2
+#define PS_HOLD RC2
 //input
-#define BOOT_SWITCH LATC1
+#define BOOT_SWITCH RC1
 
 void powerOn(void);
 
