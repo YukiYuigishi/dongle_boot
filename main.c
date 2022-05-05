@@ -41,6 +41,7 @@
  * RA1: Serial
  * 
  * RC1:  Boot Switch. HIGH(ON), LOW(OFF)
+ * RC2: PS_HOLD
  * RC3 POWER_ON
  * RC4 POWER_OFF   
  * RC5: VBUS_POWER
@@ -69,11 +70,63 @@
  *                 |
  *                GND
  */
+//input
+#define VBUS_POWER LATC5
+// POWER_OFF 1 is LOW . 0 is HIGH
+#define POWER_OFF LATC4
+#define POWER_ON LATC3
+//input
+#define PS_HOLD LATC2
+//input
+#define BOOT_SWITCH LATC1
+
+void powerOn(void);
 
 void main(void) {
     
     // clock setting
     OSCCON=0b01001000;
+    /*
+     * RC5: in
+     * RC4: out
+     * RC3: out
+     * RC2: in
+     * RC1: in
+     */
+    TRISC=0b00100110;
+    ANSELC=0;        
     
+    __delay_ms(500);
+    
+    return;
+}
+
+void powerOn(void){
+/*  
+ * POWER_ONをPS_HOLDがHIGHになるまでHIGHを保持
+ * PS_HOLDがHIGHになればPOWER_ONをLOWにしてよい
+ * Power ON
+ */
+    POWER_ON=1;
+    POWER_OFF=0;
+    
+    while(!PS_HOLD){
+        __delay_ms(50);
+    }  
+    return;
+}
+
+void powerOffHard(void){
+/*
+ * ハードウェア主導
+ * 1. POWER_ONをLOW
+ * 2. POWER_OFF_NをLOW(PS_HOLDがLOWになるまで)
+ * 3. PS_HOLDがLOWになるのを待つ(3Sec以上)
+ * 4. Power OFF
+ */    
+    POWER_ON=0;
+    POWER_OFF=1;
+    
+    while(PS_HOLD);
     return;
 }
