@@ -119,9 +119,11 @@ void main(void) {
   while (1) {
 
     if (!VBUS_POWER) {
+      // shutdown process
       powerOffHard(&start_up);
     } else {
       if (BOOT_SWITCH && !start_up && !PS_HOLD) {
+        // boot process
         powerOn(&start_up);
       }
     }
