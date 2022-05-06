@@ -127,6 +127,7 @@ void main(void) {
         powerOn(&start_up);
       }
     }
+    CLRWDT();
   }
 }
 
