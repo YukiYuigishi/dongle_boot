@@ -122,10 +122,14 @@ void main(void) {
       // shutdown process
       powerOffHard(&start_up);
     } else {
-      if (BOOT_SWITCH && !start_up && !PS_HOLD) {
+        if(!BOOT_SWITCH && start_up){
+            powerOffHard(&start_up);
+        }
+        else if (BOOT_SWITCH && !start_up && !PS_HOLD) {
         // boot process
         powerOn(&start_up);
       }
+        
     }
     CLRWDT();
   }
